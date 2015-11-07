@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MessageEvent","Represents Slack message event types."]]});

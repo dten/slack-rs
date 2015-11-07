@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `slack` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, slack">
+
+    <title>slack - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'slack', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>slack</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/slack/lib.rs.html#17-699' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'>
+<h1 id="notes:" class='section-header'><a
+                           href="#notes:">Notes:</a></h1>
+<ul>
+<li><p>Structs except for RtmClient are derived from the slack api docs at: <a href="https://api.slack.com/">https://api.slack.com/</a></p>
+
+<ul>
+<li>Optional fields in Slack structs represent fields that may not be present in the serialized form.</li>
+<li>Currently fields in Slack structs are public, but in the future they may be wrapped in getters.</li>
+</ul></li>
+<li><p>Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.</p></li>
+</ul>
+
+<h1 id="changelog:" class='section-header'><a
+                           href="#changelog:">Changelog:</a></h1>
+<p>Version 0.10.1: Massive overhaul, implement support for almost all of the bots api, stronger error handling and lots of tests.
+Thanks a ton to <a href="https://github.com/mthjones">https://github.com/mthjones</a>, see <a href="https://github.com/BenTheElder/slack-rs/pull/17">https://github.com/BenTheElder/slack-rs/pull/17</a> for the main overhaul.</p>
+
+<p>Compatibility Changes: Methods that previously returned <code>Result&lt;String,Error&gt;</code> now return a typed <code>Result&lt;Some_Slack_Response_Type, Error&gt;</code>.</p>
+
+<ul>
+<li><p><code>RtmClient::post_message</code> now returns <code>Result&lt;api::chat::PostMessageResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::delete_message</code> now returns <code>Result&lt;api::chat::DeleteResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::mark</code> now returns <code>Result&lt;api::channels::MarkResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::set_topic</code> now returns <code>Result&lt;api::channels::SetTopicResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::set_purpose</code> now returns <code>Result&lt;api::channels::SetPurposeResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::add_reaction_timestamp</code> now returns <code>Result&lt;api::reactions::AddResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::add_reaction_file</code> now returns <code>Result&lt;api::reactions::AddResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::add_reaction_file_comment</code> now returns <code>Result&lt;api::reactions::AddResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::update_message</code> now returns <code>Result&lt;api::chat::UpdateResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::im_open</code> now returns <code>Result&lt;api::im::OpenResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::channels_history</code> now returns <code>Result&lt;api::channels::HistoryResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::im_close</code> now returns <code>Result&lt;api::im::CloseResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::im_history</code> now returns <code>Result&lt;api::im::HistoryResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::im_list</code> now returns <code>Result&lt;api::im::ListResponse, Error&gt;</code></p></li>
+<li><p><code>RtmClient::im_mark</code> now returns <code>Result&lt;api::im::MarkResponse, Error&gt;</code></p></li>
+</ul>
+
+<p>Forthcoming releases will see the implementation of the remaining files.upload and some convenient helpers such as a message builder can be expected in a later release,
+and the Error::Api will expose Slack api error types more strongly in a forthcoming release.</p>
+
+<p>Version 0.9.2: Add channels_history via <a href="https://github.com/jeehoonkang">https://github.com/jeehoonkang</a> <a href="https://github.com/BenTheElder/slack-rs/pull/16">https://github.com/BenTheElder/slack-rs/pull/16</a></p>
+
+<p>Version 0.9.1 -- With help from: <a href="https://github.com/mthjones">https://github.com/mthjones</a>, overhaul error handling and refactor, improve api support.</p>
+
+<ul>
+<li><p>Introduced slack::error::Error</p></li>
+<li><p>Added a number of bots api methods</p></li>
+<li><p>Fixed bug where setPurpose called setTopic instead [!]</p></li>
+</ul>
+
+<p>Version 0.8.3 -- Moved example to examples dir thanks to <a href="https://github.com/mthjones">https://github.com/mthjones</a>: <a href="https://github.com/BenTheElder/slack-rs/pull/9">https://github.com/BenTheElder/slack-rs/pull/9</a></p>
+
+<p>Version 0.8.2 -- Fix <a href="https://github.com/BenTheElder/slack-rs/issues/8">https://github.com/BenTheElder/slack-rs/issues/8</a></p>
+
+<p>Version 0.8.1 -- Add some web api methods, add methods to map names to ids.</p>
+
+<ul>
+<li><p>TODO: expect the error type overhaul to be pushed back to 0.9.X</p></li>
+<li><p>NOTE: Compatibility changes from 0.7.X include: RtmClient::new now takes the bot token/api_key and login,
+login_and_run do not.</p></li>
+</ul>
+
+<p>Version 0.7.2 -- Bugfix via <a href="https://github.com/Farthen">https://github.com/Farthen</a>: <a href="https://github.com/BenTheElder/slack-rs/pull/6">https://github.com/BenTheElder/slack-rs/pull/6</a></p>
+
+<p>Version 0.7.1 -- Cleaned up the api and json handling.</p>
+
+<ul>
+<li><p>TODO: expect better error handling in 0.8.X</p></li>
+<li><p>NOTE: Compatibility changes from 0.6.1 include: &#39;MessageHandler&#39; is now &#39;EventHandler&#39; and all of the
+slack data structs have been updated to match the api as closely as possible.</p></li>
+</ul>
+
+<p>Version 0.6.1 -- Updated to stable rust.</p>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='api/index.html'
+                               title='slack::api'>api</a></td>
+                        <td class='docblock short'>
+                             <p>Low-level, direct interface for the <a href="https://api.slack.com/methods">Slack Web API</a>.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='error/index.html'
+                               title='slack::error'>error</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Attachment.html'
+                               title='slack::Attachment'>Attachment</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/docs/attachments"><code>Attachment</code></a> object as found in
+richly-formatted messages.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Channel.html'
+                               title='slack::Channel'>Channel</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/channel"><code>Channel</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Group.html'
+                               title='slack::Group'>Group</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/group"><code>Group</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Im.html'
+                               title='slack::Im'>Im</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/im"><code>Im</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.RtmClient.html'
+                               title='slack::RtmClient'>RtmClient</a></td>
+                        <td class='docblock short'>
+                             <p>The actual messaging client.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Team.html'
+                               title='slack::Team'>Team</a></td>
+                        <td class='docblock short'>
+                             <p>The <code>Team</code> object as found in the <a href="https://api.slack.com/methods/rtm.start"><code>rtm.start</code></a>
+response.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.User.html'
+                               title='slack::User'>User</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/user"><code>User</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.Message.html'
+                               title='slack::Message'>Message</a></td>
+                        <td class='docblock short'>
+                             <p>Represents a WebSocket message.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='trait' href='trait.EventHandler.html'
+                               title='slack::EventHandler'>EventHandler</a></td>
+                        <td class='docblock short'>
+                             <p>Implement this trait in your code to handle message events</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.WsClient.html'
+                               title='slack::WsClient'>WsClient</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "slack";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
